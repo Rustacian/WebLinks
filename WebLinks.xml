@@ -1,0 +1,8 @@
+<Ui xmlns="http://www.runewaker.com/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.runewaker.com/ UI.xsd">
+	<Frame name="WebLinksFrame" parent="UIParent" hidden="true">
+		<Scripts>
+			<OnLoad>WebLinks.OnLoad(this);</OnLoad>
+			<OnEvent>WebLinks.OnEvent();</OnEvent>
+		</Scripts>
+	</Frame>
+</Ui>
