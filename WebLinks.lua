@@ -1,14 +1,14 @@
-local function parseHyperlink(s)
-	local link, type, data, text = string.match(s, "(|H(.+):(.+)|h(.+)|h)");
-	return type, data, text, link;
-end
-
 local me = {
 	name = "WebLinks",
-	version = "0.9",
+	version = "0.10",
 	slashCommand = "/web",
 	enabled = true,
 };
+
+function me.parseHyperlink(s)
+	local link, type, data, text = string.match(s, "(|H(.+):(.+)|h(.+)|h)");
+	return type, string.gsub(data, ";//", "://"), text, link;
+end
 
 function me.OnLoad(this)
 	this:RegisterEvent("VARIABLES_LOADED");
@@ -24,12 +24,11 @@ function me.HookApi()
 	local originalClickEventHandler = _G["ChatFrame_OnHyperlinkClick"];
 	_G["ChatFrame_OnHyperlinkClick"] = function(self, link, key)
 		if me.enabled and key == "LBUTTON" then
-			local linkType, linkData = parseHyperlink(link);
+			local linkType, linkData = me.parseHyperlink(link);
 			if linkType == "web" then
 				if IsShiftKeyDown() then
 					ChatEdit_AddItemLink(link);
 				elseif not IsCtrlKeyDown() then
-					linkData = string.gsub(linkData, ";//", "://");
 					--StaticPopupDialogs["OPEN_WEBROWER"].link = linkData;
 					--StaticPopup_Show("OPEN_WEBROWER");
 					GC_OpenWebRadio(linkData);
@@ -67,10 +66,10 @@ end
 function me.ConvertWebLinks(txt)
 	if txt == nil then return end;
 	if string.find(txt, "://") then
-		local newTxt = string.gsub(txt, "(%a+://[^%s]+)", "|Hweb:%1|h|cffC6896D[%1]|r|h");
-		txt = string.gsub(newTxt, "web:(%a+)://", "web:%1;//");
+		local newTxt = string.gsub(txt, "([^%s]+://[^%s]+)", "|Hweb:%1|h|cffC6896D[%1]|r|h");
+		txt = string.gsub(newTxt, "://", ";//", 1);
 	elseif string.find(txt, "www") then
-		txt = string.gsub(txt, "(www[^%s]+)", "|Hweb:%1|h|cffC6896D[%1]|r|h");
+		txt = string.gsub(txt, "(www[^%s]+)", "|Hweb:https;//%1|h|cffC6896D[%1]|r|h");
 	end
 	return txt;
 end
