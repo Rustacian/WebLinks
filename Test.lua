@@ -84,3 +84,15 @@ assert(webLink==processLink(webLink))
 assert(tsLink==processLink(tsLink))
 assert("https://"..wwwLink==processLink(wwwLink))
 
+
+local notALink = "wwwHans"
+local notALink2 = "www. adsf"
+
+local function processText(text)
+	local msg = WebLinks.ConvertWebLinks(text)
+	print(msg)
+	return msg
+end
+
+assert(processText(notALink)==notALink)
+assert(processText(notALink2)==notALink2)

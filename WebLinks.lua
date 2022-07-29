@@ -68,8 +68,8 @@ function me.ConvertWebLinks(txt)
 	if string.find(txt, "://") then
 		local newTxt = string.gsub(txt, "([^%s]+://[^%s]+)", "|Hweb:%1|h|cffC6896D[%1]|r|h");
 		txt = string.gsub(newTxt, "://", ";//", 1);
-	elseif string.find(txt, "www") then
-		txt = string.gsub(txt, "(www[^%s]+)", "|Hweb:https;//%1|h|cffC6896D[%1]|r|h");
+	elseif string.find(txt, "www%..") then
+		txt = string.gsub(txt, "(www.[^%s]+)", "|Hweb:https;//%1|h|cffC6896D[%1]|r|h");
 	end
 	return txt;
 end
